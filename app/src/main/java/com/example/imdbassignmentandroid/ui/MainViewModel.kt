@@ -15,13 +15,16 @@ class MainViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            runCatching { repository.getPopularMovies() }
-                .onSuccess { movies ->
-                    Log.d("TMDB", "Movies loaded: ${movies.size}")
-                }
-                .onFailure { e ->
-                    Log.e("TMDB", "Failed to load movies", e)
-                }
+            runCatching {
+                val movies = repository.getPopularMovies()
+                val tvShows = repository.getPopularTvShows()
+                movies to tvShows
+            }.onSuccess { (movies, tvShows) ->
+                Log.d("TMDB", "Movies loaded: ${movies.size}")
+                Log.d("TMDB", "TV shows loaded: ${tvShows.size}")
+            }.onFailure { e ->
+                Log.e("TMDB", "Failed to load data", e)
+            }
         }
     }
 
