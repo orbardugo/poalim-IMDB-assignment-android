@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,7 +9,13 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
-val tmdbKey = project.properties["TMDB_API_KEY"] as String? ?: ""
+val localProps = Properties().apply {
+    val f = rootProject.file("local.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+
+val tmdbKey = (localProps.getProperty("TMDB_API_KEY") ?: "")
+
 android {
     namespace = "com.example.imdbassignmentandroid"
     compileSdk = 35
