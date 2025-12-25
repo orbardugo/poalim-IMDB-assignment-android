@@ -1,23 +1,44 @@
 package com.example.imdbassignmentandroid.ui.details
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.imdbassignmentandroid.ui.viewmodel.DetailsViewModel
 
 @Composable
 fun DetailsScreen(
-    itemId: Int?
+    viewModel: DetailsViewModel = hiltViewModel()
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Text("Details Screen")
-        Text("Item ID: ${itemId ?: "unknown"}")
+    val state by viewModel.uiState.collectAsState()
+
+    when {
+        state.isLoading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        state.error != null -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = state.error!!)
+            }
+        }
+
+        state.movie != null -> {
+            DetailsContent(details = state.movie!!)
+        }
     }
 }

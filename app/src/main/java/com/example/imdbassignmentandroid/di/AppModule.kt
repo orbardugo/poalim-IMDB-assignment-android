@@ -1,8 +1,8 @@
 package com.example.imdbassignmentandroid.di
 
 import com.example.imdbassignmentandroid.data.remote.api.TmdbApi
-import com.example.imdbassignmentandroid.data.repository.MoviesRepository
-import com.example.imdbassignmentandroid.data.repository.MoviesRepositoryImpl
+import com.example.imdbassignmentandroid.data.repository.TmdbRepository
+import com.example.imdbassignmentandroid.data.repository.TmdbRepositoryImpl
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -41,6 +41,6 @@ object AppModule {
     @Singleton
     fun provideMoviesRepository(
         api: TmdbApi
-    ): MoviesRepository =
-        MoviesRepositoryImpl(api)
+    ): TmdbRepository =
+        TmdbRepositoryImpl(api)
 }
