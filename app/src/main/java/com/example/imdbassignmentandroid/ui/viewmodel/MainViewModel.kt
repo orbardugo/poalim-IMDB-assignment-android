@@ -3,7 +3,7 @@ package com.example.imdbassignmentandroid.ui.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.imdbassignmentandroid.data.repository.MoviesRepository
+import com.example.imdbassignmentandroid.data.repository.TmdbRepository
 import com.example.imdbassignmentandroid.ui.home.HomeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repository: MoviesRepository
+    private val repository: TmdbRepository
 ) : ViewModel() {
 
     // Backing property (mutable inside VM)
