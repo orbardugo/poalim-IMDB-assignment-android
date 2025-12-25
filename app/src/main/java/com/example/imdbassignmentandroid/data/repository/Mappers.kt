@@ -9,12 +9,14 @@ fun MovieDto.toDomain(): Movie =
     Movie(
         id = id,
         title = title,
-        posterPath = posterPath
+        posterPath = posterPath,
+        rating = rating
     )
 
 fun TvShowDto.toDomain(): TvShow =
     TvShow(
         id = id,
         name = name,
-        posterPath = posterPath
+        posterPath = posterPath,
+        rating = rating
     )

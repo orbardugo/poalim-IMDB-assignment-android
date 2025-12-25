@@ -7,11 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.imdbassignmentandroid.ui.MainViewModel
+import com.example.imdbassignmentandroid.ui.navigation.AppNavHost
 import com.example.imdbassignmentandroid.ui.theme.IMDBAssignmentAndroidTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,20 +20,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             IMDBAssignmentAndroidTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainScreen(modifier = Modifier.padding(innerPadding))
+                    AppNavHost(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
     }
-}
-
-@Composable
-fun MainScreen(
-    modifier: Modifier = Modifier,
-    viewModel: MainViewModel = hiltViewModel()
-) {
-    Text(
-        text = "Check Logcat for TMDB results",
-        modifier = modifier
-    )
 }

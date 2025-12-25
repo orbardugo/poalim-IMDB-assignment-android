@@ -9,5 +9,6 @@ data class PopularTvResponse(
 data class TvShowDto(
     val id: Int,
     @Json(name = "name") val name: String,
-    @Json(name = "poster_path") val posterPath: String?
+    @Json(name = "poster_path") val posterPath: String?,
+    @Json(name = "vote_average") val rating: Double
 )
