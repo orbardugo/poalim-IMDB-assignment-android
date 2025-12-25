@@ -48,7 +48,7 @@ fun AppNavHost(
                 navArgument("itemId") { type = NavType.IntType }
             )
         ) {
-            DetailsScreen()   // no need to pass itemId manually here
+            DetailsScreen()
         }
 
         composable(Screen.Search.route) {
