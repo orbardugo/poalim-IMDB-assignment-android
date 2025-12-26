@@ -29,6 +29,7 @@ fun DetailsContent(details: MediaDetails) {
     val shareUrl = when (details.mediaType) {
         MediaType.MOVIE -> "https://www.themoviedb.org/movie/${details.id}"
         MediaType.TV -> "https://www.themoviedb.org/tv/${details.id}"
+        MediaType.UNKNOWN -> null
     }
     val trailerQuery = Uri.encode("${details.title} trailer")
 
@@ -125,19 +126,20 @@ fun DetailsContent(details: MediaDetails) {
                 ) {
                     Text("Watch Trailer")
                 }
-
-                Button(
-                    modifier = Modifier.weight(1f),
-                    onClick = {
-                        // Shares a link to the movie page on TMDB using the system share sheet.
-                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                            type = "text/plain"
-                            putExtra(Intent.EXTRA_TEXT, "Check out ${details.title}: $shareUrl")
+                if (shareUrl != null) {
+                    Button(
+                        modifier = Modifier.weight(1f),
+                        onClick = {
+                            // Shares a link to the movie page on TMDB using the system share sheet.
+                            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                type = "text/plain"
+                                putExtra(Intent.EXTRA_TEXT, "Check out ${details.title}: $shareUrl")
+                            }
+                            context.startActivity(Intent.createChooser(shareIntent, "Share"))
                         }
-                        context.startActivity(Intent.createChooser(shareIntent, "Share"))
+                    ) {
+                        Text("Share")
                     }
-                ) {
-                    Text("Share")
                 }
             }
         }

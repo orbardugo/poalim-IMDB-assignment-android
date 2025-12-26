@@ -40,6 +40,7 @@ class DetailsViewModel @Inject constructor(
                 when (mediaType) {
                     MediaType.MOVIE -> repository.getMovieDetails(itemId)
                     MediaType.TV    -> repository.getTvShowDetails(itemId)
+                    MediaType.UNKNOWN -> error("Unsupported media type: $mediaType")
                 }
             }.onSuccess { movie ->
                 _uiState.value = DetailsUiState(
