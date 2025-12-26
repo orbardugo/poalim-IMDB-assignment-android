@@ -29,16 +29,23 @@ fun DetailsScreen(
         }
 
         state.error != null -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = state.error!!)
+            state.error?.let { errorText ->
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = errorText)
+                }
             }
         }
-
-        state.movie != null -> {
-            DetailsContent(details = state.movie!!)
+        else -> {
+            state.movie?.let { details ->
+                DetailsContent(
+                    details = details,
+                    isFavorite = state.isFavorite,
+                    onFavoriteClick = viewModel::onFavoriteClick
+                )
+            }
         }
     }
 }

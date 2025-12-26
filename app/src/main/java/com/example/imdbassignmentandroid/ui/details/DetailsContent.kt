@@ -5,7 +5,12 @@ import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,11 +23,12 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.imdbassignmentandroid.domain.model.MediaDetails
 import com.example.imdbassignmentandroid.domain.model.MediaType
+import kotlin.reflect.KFunction0
 
 private const val TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w780"
 
 @Composable
-fun DetailsContent(details: MediaDetails) {
+fun DetailsContent(details: MediaDetails, isFavorite: Boolean, onFavoriteClick: KFunction0<Unit>) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
 
@@ -140,6 +146,10 @@ fun DetailsContent(details: MediaDetails) {
                     ) {
                         Text("Share")
                     }
+                }
+                IconButton(onClick = onFavoriteClick) {
+                    val icon = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder
+                    Icon(imageVector = icon, contentDescription = null)
                 }
             }
         }
