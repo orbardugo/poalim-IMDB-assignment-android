@@ -3,6 +3,7 @@ package com.example.imdbassignmentandroid.data.remote.api
 import com.example.imdbassignmentandroid.data.remote.dto.MovieDetailsDto
 import com.example.imdbassignmentandroid.data.remote.dto.PopularMoviesResponse
 import com.example.imdbassignmentandroid.data.remote.dto.PopularTvResponse
+import com.example.imdbassignmentandroid.data.remote.dto.SearchResponseDto
 import com.example.imdbassignmentandroid.data.remote.dto.TvDetailsDto
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -33,4 +34,11 @@ interface TmdbApi {
         @Path("series_id") movieId: Int,
         @Query("api_key") apiKey: String
         ): TvDetailsDto
+
+    @GET("search/multi")
+    suspend fun search(
+        @Query("api_key") apiKey: String,
+        @Query("query") query: String
+    ): SearchResponseDto
+
 }
