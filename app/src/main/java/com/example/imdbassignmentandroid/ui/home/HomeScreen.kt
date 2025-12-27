@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.imdbassignmentandroid.domain.model.MediaType
 import com.example.imdbassignmentandroid.domain.model.Movie
 import com.example.imdbassignmentandroid.domain.model.TvShow
+import com.example.imdbassignmentandroid.ui.favorites.FavoritesModal
 import com.example.imdbassignmentandroid.ui.search.SearchModal
 import com.example.imdbassignmentandroid.ui.viewmodel.MainViewModel
 
@@ -23,22 +24,33 @@ import com.example.imdbassignmentandroid.ui.viewmodel.MainViewModel
 fun HomeScreen(
     onMovieClick: (Movie) -> Unit,
     onTvShowClick: (TvShow) -> Unit,
-    onSearchResultClick: (MediaType, Int) -> Unit,
-    onFavoritesClick: () -> Unit,
+    onNavigateToDetails: (MediaType, Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
 
     var showSearch by remember { mutableStateOf(false) }
+    var showFavorites by remember { mutableStateOf(false) }
+
 
     if (showSearch) {
         SearchModal(
             onItemClick = { mediaType, id ->
-                onSearchResultClick(mediaType, id)
+                onNavigateToDetails(mediaType, id)
                 showSearch = false
             },
             onClose = { showSearch = false }
+        )
+    }
+
+    if (showFavorites) {
+        FavoritesModal(
+            onItemClick = { mediaType, id ->
+                showFavorites = false
+                onNavigateToDetails(mediaType, id)
+            },
+            onClose = { showFavorites = false }
         )
     }
 
@@ -59,7 +71,7 @@ fun HomeScreen(
                 onMovieClick = onMovieClick,
                 onTvShowClick = onTvShowClick,
                 onSearchClick = { showSearch = true },
-                onFavoritesClick = onFavoritesClick
+                onFavoritesClick = { showFavorites = true }
             )
         }
     }

@@ -1,5 +1,8 @@
 package com.example.imdbassignmentandroid.di
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import com.example.imdbassignmentandroid.data.remote.api.TmdbApi
 import com.example.imdbassignmentandroid.data.repository.TmdbRepository
 import com.example.imdbassignmentandroid.data.repository.TmdbRepositoryImpl
@@ -8,6 +11,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -43,4 +47,15 @@ object AppModule {
         api: TmdbApi
     ): TmdbRepository =
         TmdbRepositoryImpl(api)
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(
+        @ApplicationContext context: Context
+    ): SharedPreferences {
+        return context.getSharedPreferences(
+            "tmdb_prefs",
+            Context.MODE_PRIVATE
+        )
+    }
 }

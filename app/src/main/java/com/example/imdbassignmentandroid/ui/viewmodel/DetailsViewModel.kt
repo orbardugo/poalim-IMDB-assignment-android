@@ -3,6 +3,7 @@ package com.example.imdbassignmentandroid.ui.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.imdbassignmentandroid.data.local.FavoritesStore
 import com.example.imdbassignmentandroid.data.repository.TmdbRepository
 import com.example.imdbassignmentandroid.domain.model.MediaType
 import com.example.imdbassignmentandroid.ui.details.DetailsUiState
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
     private val repository: TmdbRepository,
+    private val favoritesStore: FavoritesStore,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -34,7 +36,12 @@ class DetailsViewModel @Inject constructor(
 
     private fun loadDetails() {
         viewModelScope.launch {
-            _uiState.value = DetailsUiState(isLoading = true)
+            val favorite = favoritesStore.isFavorite(mediaType, itemId)
+
+            _uiState.value = DetailsUiState(
+                isLoading = true,
+                isFavorite = favorite
+            )
 
             runCatching {
                 when (mediaType) {
@@ -43,16 +50,28 @@ class DetailsViewModel @Inject constructor(
                     MediaType.UNKNOWN -> error("Unsupported media type: $mediaType")
                 }
             }.onSuccess { movie ->
-                _uiState.value = DetailsUiState(
+                _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    movie = movie
+                    movie = movie,
+                    error = null
                 )
             }.onFailure { e ->
-                _uiState.value = DetailsUiState(
+                _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     error = e.message ?: "Failed to load details"
                 )
             }
+        }
+    }
+
+    fun onFavoriteClick() {
+        viewModelScope.launch {
+            favoritesStore.toggleFavorite(mediaType, itemId)
+
+            val current = _uiState.value.isFavorite
+            _uiState.value = _uiState.value.copy(
+                isFavorite = !current
+            )
         }
     }
 }

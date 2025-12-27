@@ -32,11 +32,8 @@ fun AppNavHost(
                 onTvShowClick = { tvShow ->
                     navController.navigate("${Screen.Details.route}/${MediaType.TV.name}/${tvShow.id}")
                 },
-                onSearchResultClick = { mediaType, id ->
+                onNavigateToDetails = { mediaType, id ->
                     navController.navigate("${Screen.Details.route}/${mediaType.name}/$id")
-                },
-                onFavoritesClick = {
-                    navController.navigate(Screen.Favorites.route)
                 }
             )
         }
@@ -48,10 +45,6 @@ fun AppNavHost(
                 navArgument("itemId") { type = NavType.IntType }
             )
         ) {
-            DetailsScreen()
-        }
-
-        composable(Screen.Favorites.route) {
             DetailsScreen()
         }
     }
